@@ -4,12 +4,20 @@
     height: 100%;
     border: 2px solid #6C63FF;
     border-radius: 15px;
-    padding: 10px;
+    padding: 15px;
     box-sizing: border-box;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 }
+
+@media screen and (max-width: 599px) {
+    .todo-container-input-inner{
+        width: 70%;
+    }
+}
+    
+
 
 /* 할일 입력 필드 */
 .todo-container-input{
@@ -18,20 +26,27 @@
     justify-content: center;
     align-items: center;
 }
+
 /* 등록 버튼 */
 .todo-container-input-btn{
     cursor: pointer;
     color: #fff;
     font-size: 15px;
     width: 10%;
-    height: 100%;
+    height: auto;
     border: 2px solid #fff;
     border-radius: 15px;
-    padding: 10px;
+    padding: 15px;
     box-sizing: border-box;
     background-color:  #6C63FF;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
+}
+@media screen and (max-width: 599px) {
+    .todo-container-input-btn{
+        width: 20%;
+    }
+    
 }
 
 .todo-container-input-btn:hover{
@@ -58,17 +73,24 @@
 
 /* 할일 목록 */
 .todo-container-list {
-    width: 60%;
-    margin: 20px auto;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
 /* 할일 목록 내부 */
 .todo-container-list-inner {
     list-style: none;
     padding: 0;
+    width: 61%;
 }
 
+@media screen and (max-width: 599px) {
+    .todo-container-list-inner {
+        width: 90%;
+    }
+}
 /* 할일 아이템 */
 .todo-container-list-inner li {
     display: flex;
