@@ -16,7 +16,11 @@
         width: 70%;
     }
 }
+
+.todo-container-title-inner{
+    margin: 0;
     
+}
 
 
 /* 할일 입력 필드 */
