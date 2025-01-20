@@ -35,6 +35,9 @@ dependencies {
 
     //mysql
     implementation 'com.mysql:mysql-connector-j'
+
+    //mariadb
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 }
 
 tasks.named('test') {
