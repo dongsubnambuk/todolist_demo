@@ -26,24 +26,24 @@ public class SecurityConfig {
 
                                 // POST 요청만 허용
                                 .requestMatchers(HttpMethod.POST,
-                                        "/api/auth/sign-up",
-                                        "/api/auth/sign-in",
-                                        "/api/todo",
-                                        "/api/category")
+                                        "/todo/auth/sign-up",
+                                        "/todo/auth/sign-in",
+                                        "/todo/todo",
+                                        "/todo/category")
                                 .permitAll()
 
                                 // GET 요청만 허용
                                 .requestMatchers(HttpMethod.GET,
-                                        "/api/todo/user")
+                                        "/todo/todo/user")
                                 .permitAll()
 
                                 .requestMatchers(HttpMethod.PATCH,
-                                        "/api/category")
+                                        "/todo/category")
                                 .permitAll()
 
                                 .requestMatchers(HttpMethod.DELETE,
-                                        "/api/category",
-                                        "/api/todo")
+                                        "/todo/category",
+                                        "/todo/todo")
                                 .permitAll()
                                 // 그 외의 요청은 인증 필요
                                 .anyRequest().authenticated()
@@ -55,7 +55,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://refresh-f5.store", "http://127.0.0.1:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("https://refresh-f5.store", "http://127.0.0.1:3000",
+                "https://superlative-entremet-ac0250.netlify.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedOriginPattern("*");

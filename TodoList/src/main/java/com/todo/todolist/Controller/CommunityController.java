@@ -4,14 +4,12 @@ import com.todo.todolist.DTO.StatusDTO;
 import com.todo.todolist.Service.Community.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/community")
+@RequestMapping("/todo/community")
 @RequiredArgsConstructor
+@CrossOrigin("https://superlative-entremet-ac0250.netlify.app")
 public class CommunityController {
     private final CommunityService communityService;
 

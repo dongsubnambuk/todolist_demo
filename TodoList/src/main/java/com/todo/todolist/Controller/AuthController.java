@@ -8,8 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/todo/auth")
 @RequiredArgsConstructor
+@CrossOrigin("https://superlative-entremet-ac0250.netlify.app")
 public class AuthController {
     private final AuthService authService;
 
