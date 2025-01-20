@@ -10,4 +10,5 @@ public interface TodoService {
     LinkedHashMap<String, Object> getTodoList(Long userId);
     void deleteTodo(Long todoId);
     void deleteCategory(Long userId, Long CategoryId);
+    LinkedHashMap<String, Object> updateCategory(Long categoryId, String title, String color);
 }

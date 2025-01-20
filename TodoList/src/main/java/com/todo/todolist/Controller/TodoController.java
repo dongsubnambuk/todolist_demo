@@ -44,6 +44,20 @@ public class TodoController {
         }
     }
 
+    @PatchMapping("/category")
+    public ResponseEntity<?> updateCategory(@RequestParam Long categoryId,
+                                            @RequestParam String title,
+                                            @RequestParam String color){
+        try{
+            return ResponseEntity.ok(todoService.updateCategory(categoryId, title, color));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(StatusDTO.builder()
+                            .code(404)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
     @PostMapping("/todo")
     public ResponseEntity<?> postTodo(@RequestBody TodoDTO todo){
         try{

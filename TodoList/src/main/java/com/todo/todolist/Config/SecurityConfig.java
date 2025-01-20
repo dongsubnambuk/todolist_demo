@@ -38,7 +38,7 @@ public class SecurityConfig {
                                 .permitAll()
 
                                 .requestMatchers(HttpMethod.PATCH,
-                                        "/api/pickup/update-pickup")
+                                        "/api/category")
                                 .permitAll()
 
                                 .requestMatchers(HttpMethod.DELETE,

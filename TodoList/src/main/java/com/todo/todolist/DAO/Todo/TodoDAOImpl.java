@@ -2,7 +2,6 @@ package com.todo.todolist.DAO.Todo;
 
 import com.todo.todolist.DTO.TodoDTO;
 import com.todo.todolist.Entity.CategoryEntity;
-import com.todo.todolist.Entity.SympathyEntity;
 import com.todo.todolist.Entity.TodoEntity;
 import com.todo.todolist.Repository.CategoryRepository;
 import com.todo.todolist.Repository.SympathyRepository;
@@ -12,10 +11,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -54,14 +51,7 @@ public class TodoDAOImpl implements TodoDAO{
     public LinkedHashMap<String, Object> newCategory(Long userId, String title, String color) {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setUser(userRepository.getReferenceById(userId));
-        categoryEntity.setTitle(title);
-        categoryEntity.setColor(color);
-        categoryEntity = categoryRepository.save(categoryEntity);
-
-        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-        result.put("categoryId", categoryEntity.getId());
-        result.put("details", CategoryEntity.entityToDTO(categoryEntity));
-        return result;
+        return getStringObjectLinkedHashMap(title, color, categoryEntity);
     }
 
     // 3중맵으로 해야 할 듯?
@@ -118,5 +108,23 @@ public class TodoDAOImpl implements TodoDAO{
         for(TodoEntity todo : todoEntities)
             removeTodo(todo.getId());
         categoryRepository.delete(categoryEntity);
+    }
+
+    @Override
+    public LinkedHashMap<String, Object> editCategory(Long categoryId, String title, String color) {
+        CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 카테고리 아이디"));
+        return getStringObjectLinkedHashMap(title, color, categoryEntity);
+    }
+
+    private LinkedHashMap<String, Object> getStringObjectLinkedHashMap(String title, String color, CategoryEntity categoryEntity) {
+        categoryEntity.setTitle(title);
+        categoryEntity.setColor(color);
+        categoryEntity = categoryRepository.save(categoryEntity);
+
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+        result.put("categoryId", categoryEntity.getId());
+        result.put("details", CategoryEntity.entityToDTO(categoryEntity));
+        return result;
     }
 }
