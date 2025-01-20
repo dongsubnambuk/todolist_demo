@@ -1,26 +1,43 @@
 import React,{useState} from 'react'
 import '../CSS/Signup.css'
 import logo from'../images/todologo.png';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [nickname, setNickname] = useState("");
+    const navigate = useNavigate();
 
- const handleSignup = () => {
-    if(email === '' || password === '' || confirmPassword === '' || nickname === '') {
-        alert('이메일, 비밀번호, 비밀번호 확인, 닉네임을 입력해주세요.');
-        return;
+  //회원가입
+  const handleSignup = async (event) => {
+    event.preventDefault();
+
+    const response = await fetch("https://refresh-f5-server.o-r.kr/todo/auth/sign-up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password: password,
+        name: nickname,
+        email: email,
+     
+      }),
+    });
+
+    const result = await response.json();
+
+    if (response.status === 200) {
+      console.log(result);
+      alert("회원가입 성공하였습니다. 로그인 해주세요.");
+      navigate("/login");
+    } else {
+      console.log("회원가입 실패");
+      alert("회원가입 실패: " + result.message);
     }
-    if(password !== confirmPassword) {
-        alert('비밀번호가 일치하지 않습니다.');
-        return;
-    }
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Nickname:', nickname);
-}
+  };
     return(
        <div className='signup-container'>
             <div className='signup-title-container'>

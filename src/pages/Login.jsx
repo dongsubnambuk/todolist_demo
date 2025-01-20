@@ -1,20 +1,47 @@
 import React, { useState } from 'react'
 import '../CSS/Login.css'
 import logo from'../images/todologo.png';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+        const navigate = useNavigate();
 
-    const handleLogin = () => {
-        if(email === '' || password === '') {
-            alert('이메일과 비밀번호를 입력해주세요.');
-            return;
+
+    //login fetch
+    const handleUserLogin = async (event) => {
+        event.preventDefault();
+    
+        try {
+          const response = await fetch('https://refresh-f5-server.o-r.kr/todo/auth/sign-in', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+            }),
+          });
+    
+          const result = await response.json();
+    
+          if (response.status === 200) {
+            console.log(result);
+            localStorage.setItem("email", result.user.email);
+            localStorage.setItem("id", result.user.id);
+            console.log("로그인 성공");
+            navigate('/');
+          } else {
+            console.log("로그인 실패");
+            
+              alert("로그인 실패: " + result.message);
+          }
+        } catch (error) {
+          console.error("Fetch error: ", error);
         }
-        console.log('Email:', email);
-        console.log('Password:', password);
-    };
-
+      };
     return(
         <div className='login-container'>
             <div className='login-title-container'>
@@ -28,7 +55,7 @@ const Login = () => {
             <div className='login-form-container'>
                 <input className='login-input' type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <input className='login-input' type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-                <button className='login-button' onClick={handleLogin}>Login</button>
+                <button className='login-button' onClick={handleUserLogin}>Login</button>
             </div>
 
             <div className='login-signup-container'>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../CSS/MainPage.css';
 import logo from'../images/todologo.png';
 import { useNavigate } from 'react-router-dom';

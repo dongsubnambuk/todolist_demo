@@ -1,0 +1,54 @@
+.todomain-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.todomain-logo-con{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.todomain-logo{
+    width: 100px;
+    height: 100px;
+}
+.todomain-title{
+    font-weight: 700;
+}
+.todomain-introduction-container{
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    height: 100px;
+    flex-direction: column;
+    border-radius: 15px;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.todomain-profile {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    gap: 16px;
+}
+
+.todomain-profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.todomain-introduction-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.todomain-introduction-text {
+    font-size: 14px;
+    color: #888;
+    margin: 0;
+}
