@@ -64,4 +64,13 @@ public class TodoServiceImpl implements TodoService{
             }
         } else throw new IllegalStateException("잘못된 아이디");
     }
+
+    @Override
+    public LinkedHashMap<String, Object> updateCategory(Long categoryId, String title, String color) {
+        try {
+            return todoDAO.editCategory(categoryId, title, color);
+        } catch (Exception e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
 }

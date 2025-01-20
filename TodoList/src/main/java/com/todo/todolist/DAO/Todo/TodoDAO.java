@@ -10,4 +10,5 @@ public interface TodoDAO {
     LinkedHashMap<String, Object> getTodoList(Long userId);
     void removeTodo(Long todoId);
     void removeCategory(Long categoryId);
+    LinkedHashMap<String, Object> editCategory(Long categoryId, String title, String color);
 }
