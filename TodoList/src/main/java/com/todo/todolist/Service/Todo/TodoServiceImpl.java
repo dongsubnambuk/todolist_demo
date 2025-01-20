@@ -33,4 +33,35 @@ public class TodoServiceImpl implements TodoService{
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    @Override
+    public LinkedHashMap<String, Object> getTodoList(Long userId){
+        if(authDAO.existUserId(userId)){
+            try{
+                return todoDAO.getTodoList(userId);
+            } catch (Exception e){
+                throw new IllegalStateException(e.getMessage());
+            }
+        } else throw new IllegalStateException("잘못된 유저 아이디");
+    }
+
+    @Override
+    public void deleteTodo(Long todoId){
+        try{
+            todoDAO.removeTodo(todoId);
+        } catch (Exception e){
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteCategory(Long userId, Long categoryId){
+        if(authDAO.existUserId(userId)) {
+            try {
+                todoDAO.removeCategory(categoryId);
+            } catch (Exception e) {
+                throw new IllegalStateException(e.getMessage());
+            }
+        } else throw new IllegalStateException("잘못된 아이디");
+    }
 }

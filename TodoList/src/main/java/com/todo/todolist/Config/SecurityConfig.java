@@ -34,7 +34,7 @@ public class SecurityConfig {
 
                                 // GET 요청만 허용
                                 .requestMatchers(HttpMethod.GET,
-                                        "/api/pickup/waste/type-list")
+                                        "/api/todo/user")
                                 .permitAll()
 
                                 .requestMatchers(HttpMethod.PATCH,
@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 .permitAll()
 
                                 .requestMatchers(HttpMethod.DELETE,
-                                        "/api/auth/withdraw")
+                                        "/api/category",
+                                        "/api/todo")
                                 .permitAll()
                                 // 그 외의 요청은 인증 필요
                                 .anyRequest().authenticated()

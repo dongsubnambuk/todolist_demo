@@ -27,10 +27,55 @@ public class TodoController {
         }
     }
 
+    @DeleteMapping("/category")
+    public ResponseEntity<?> deleteCategory(@RequestParam Long userId,
+                                            @RequestParam Long categoryId) {
+        try{
+            todoService.deleteCategory(userId, categoryId);
+            return ResponseEntity.ok(StatusDTO.builder()
+                            .code(200)
+                            .message("삭제 성공")
+                            .build());
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(StatusDTO.builder()
+                            .code(404)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
     @PostMapping("/todo")
     public ResponseEntity<?> postTodo(@RequestBody TodoDTO todo){
         try{
             return ResponseEntity.ok(todoService.createTodo(todo));
+        } catch (Exception e){
+            return ResponseEntity.status(404).body(StatusDTO.builder()
+                            .code(404)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
+    @DeleteMapping("/todo")
+    public ResponseEntity<?> deleteTodo(@RequestParam Long todoId){
+        try{
+            todoService.deleteTodo(todoId);
+            return ResponseEntity.ok(StatusDTO.builder()
+                            .code(200)
+                            .message("삭제 성공")
+                            .build());
+        } catch (Exception e){
+            return ResponseEntity.status(404).body(StatusDTO.builder()
+                            .code(404)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
+
+    @GetMapping("/todo/user")
+    public ResponseEntity<?> getTodoList(@RequestParam Long userId){
+        try{
+            return ResponseEntity.ok(todoService.getTodoList(userId));
         } catch (Exception e){
             return ResponseEntity.status(404).body(StatusDTO.builder()
                             .code(404)

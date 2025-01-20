@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping
-public interface LikeRepository extends JpaRepository<SympathyEntity, Long> {
+public interface SympathyRepository extends JpaRepository<SympathyEntity, Long> {
 }
