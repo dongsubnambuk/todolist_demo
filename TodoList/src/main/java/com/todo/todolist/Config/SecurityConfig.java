@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -48,7 +50,10 @@ public class SecurityConfig {
                                 // 그 외의 요청은 인증 필요
                                 .anyRequest().authenticated()
                 )
-                .csrf(AbstractHttpConfigurer::disable); // CSRF 보호 비활성화
+                .formLogin(withDefaults())
+                .logout(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
+                .cors(withDefaults());
         return http.build();
     }
 
