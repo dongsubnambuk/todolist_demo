@@ -73,4 +73,15 @@ public class TodoServiceImpl implements TodoService{
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    @Override
+    public LinkedHashMap<Long, Object> addSympathy(Long todoId, Long userId, String type) {
+        if(authDAO.existUserId(userId)) {
+            try {
+                return todoDAO.newSympathy(todoId, userId, type);
+            } catch (Exception e) {
+                throw new IllegalStateException(e.getMessage());
+            }
+        } else throw new IllegalStateException("잘못된 유저 아이디");
+    }
 }

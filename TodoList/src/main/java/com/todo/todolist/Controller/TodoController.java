@@ -98,4 +98,19 @@ public class TodoController {
                             .build());
         }
     }
+
+    @PostMapping("/todo/sympathy")
+    public ResponseEntity<?> addSympathy(
+            @RequestParam Long todoId,
+            @RequestParam Long userId,
+            @RequestParam String type){
+        try{
+            return ResponseEntity.ok(todoService.addSympathy(todoId, userId, type));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(StatusDTO.builder()
+                            .code(404)
+                            .message(e.getMessage())
+                            .build());
+        }
+    }
 }

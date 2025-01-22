@@ -31,7 +31,8 @@ public class SecurityConfig {
                                         "/todo/auth/sign-up",
                                         "/todo/auth/sign-in",
                                         "/todo/todo",
-                                        "/todo/category")
+                                        "/todo/category",
+                                        "/todo/todo/sympathy")
                                 .permitAll()
 
                                 // GET 요청만 허용

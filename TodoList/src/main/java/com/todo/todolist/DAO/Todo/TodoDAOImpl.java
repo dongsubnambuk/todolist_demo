@@ -1,7 +1,9 @@
 package com.todo.todolist.DAO.Todo;
 
+import com.todo.todolist.DTO.SympathyDTO;
 import com.todo.todolist.DTO.TodoDTO;
 import com.todo.todolist.Entity.CategoryEntity;
+import com.todo.todolist.Entity.SympathyEntity;
 import com.todo.todolist.Entity.TodoEntity;
 import com.todo.todolist.Repository.CategoryRepository;
 import com.todo.todolist.Repository.SympathyRepository;
@@ -11,8 +13,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -54,6 +59,17 @@ public class TodoDAOImpl implements TodoDAO{
         return getStringObjectLinkedHashMap(title, color, categoryEntity);
     }
 
+    private Map<String, List<SympathyDTO>> getSympathyDTOList(Map<Long, SympathyEntity> sympathyEntities) {
+        Map<String, List<SympathyDTO>> result = new LinkedHashMap<>();
+        List<SympathyDTO> sympathyDTOS = new ArrayList<>();
+        for (SympathyEntity sympathyEntity : sympathyEntities.values()) {
+            SympathyDTO sympathyDTO = SympathyEntity.entityToDTO(sympathyEntity);
+            sympathyDTOS.add(sympathyDTO);
+        }
+        result.put("sympathy", sympathyDTOS);
+        return result;
+    }
+
     // 3중맵으로 해야 할 듯?
     @Override
     public LinkedHashMap<String, Object> getTodoList(Long userId) {
@@ -67,12 +83,15 @@ public class TodoDAOImpl implements TodoDAO{
             // 카테고리 정보
             details.put("details", CategoryEntity.entityToDTO(categoryEntity));
             // 카테고리에 연결된 투두리스트 리스트에 저장
-            LinkedHashMap<Long, TodoDTO> todoDTOList = new LinkedHashMap<>();
+            LinkedHashMap<Object, Object> todoList = new LinkedHashMap<>();
             for(TodoEntity todo : todoRepository.category(categoryEntity)){
-                todoDTOList.put(todo.getId(), TodoEntity.entityToDTO(todo));
+                List<Object> todoDetail = new ArrayList<>();
+                todoDetail.add(TodoEntity.entityToDTO(todo));
+                todoDetail.add(getSympathyDTOList(todo.getSympathyMap()));
+                todoList.put(todo.getId(), todoDetail);
             }
             // 해당 리스트 상세정보 해시맵에 저장
-            details.put("todo", todoDTOList);
+            details.put("todo", todoList);
             //최종 결과 해시맵에 저장
             result.put(categoryEntity.getId().toString(), details);
         }
@@ -96,7 +115,7 @@ public class TodoDAOImpl implements TodoDAO{
     public void removeTodo(Long todoId) throws IllegalStateException{
         TodoEntity todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new IllegalStateException("잘못된 투두 아이디"));
-        sympathyRepository.deleteAll(todo.getSympathyList());
+        todo.getSympathyMap().clear(); // OneToMany 에다가 Cascade, orphanRemoval 을 붙여놓아서 여기에서 지우는거 만으로 자식 엔티티도 삭제됨
         todoRepository.delete(todo);
     }
 
@@ -125,6 +144,28 @@ public class TodoDAOImpl implements TodoDAO{
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
         result.put("categoryId", categoryEntity.getId());
         result.put("details", CategoryEntity.entityToDTO(categoryEntity));
+        return result;
+    }
+
+    // 메소드 개맘에 안드는데?
+    // 기능에 비해서 너무 복잡하게 짜인거 같은디
+    @Override
+    public LinkedHashMap<Long, Object> newSympathy(Long todoId, Long userId, String type) {
+        // 새로운 공감 엔티티 생성
+        SympathyEntity sympathyEntity = new SympathyEntity();
+        // userID 로 user 테이블 가져와서 연결
+        sympathyEntity.setUser(userRepository.getReferenceById(userId));
+        sympathyEntity.setType(type);
+        sympathyEntity.setCreatedAt(LocalDateTime.now());
+        // 저장하는 동시에 메소드 내부의 엔티티 업데이트
+        sympathyEntity = sympathyRepository.save(sympathyEntity);
+        // todoRepository 로 정보 가져옴
+        TodoEntity todo = todoRepository.findById(todoId).orElseThrow(()-> new IllegalStateException("잘못된 투두 아이디"));
+        // sympathyMap 에 방금 생성한애 연결
+        todo.getSympathyMap().put(sympathyEntity.getId(), sympathyEntity);
+        // 리턴할 map 생성 후 getSympathyDTOList 메소드로 정보 가져와서 저장
+        LinkedHashMap<Long, Object> result = new LinkedHashMap<>();
+        result.put(todoId, getSympathyDTOList(todo.getSympathyMap()));
         return result;
     }
 }
