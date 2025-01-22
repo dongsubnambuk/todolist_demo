@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "todo")
@@ -23,8 +24,9 @@ public class TodoEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private CategoryEntity category;
 
-    @OneToMany
-    private List<SympathyEntity> sympathyList;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKey(name = "id")
+    private Map<Long, SympathyEntity> sympathyMap = new HashMap<>();
 
     @Column
     private String title;

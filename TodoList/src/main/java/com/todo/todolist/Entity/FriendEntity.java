@@ -3,7 +3,9 @@ package com.todo.todolist.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "friend")
@@ -22,5 +24,6 @@ public class FriendEntity {
     private UserEntity user;
 
     @OneToMany
-    private List<UserEntity> friends;
+    @MapKey(name = "userId")
+    private Map<Long, UserEntity> friends = new HashMap<>();
 }
