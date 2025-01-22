@@ -55,7 +55,8 @@ public class TodoDAOImpl implements TodoDAO{
     @Override
     public LinkedHashMap<String, Object> newCategory(Long userId, String title, String color) {
         CategoryEntity categoryEntity = new CategoryEntity();
-        categoryEntity.setUser(userRepository.getReferenceById(userId));
+        categoryEntity.setUser(userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 사용자 아이디")));
         return getStringObjectLinkedHashMap(title, color, categoryEntity);
     }
 
@@ -71,10 +72,12 @@ public class TodoDAOImpl implements TodoDAO{
     }
 
     // 3중맵으로 해야 할 듯?
+    // 하다보니 4중맵이 되어버림
     @Override
     public LinkedHashMap<String, Object> getTodoList(Long userId) {
         LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-        List<CategoryEntity> categoryEntities = categoryRepository.user(userRepository.getReferenceById(userId));
+        List<CategoryEntity> categoryEntities = categoryRepository.user(userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("잘못된 사용자 아이디")));
 
         // 전체 정보 담기 프로세스
         for(CategoryEntity categoryEntity : categoryEntities) {
@@ -136,7 +139,9 @@ public class TodoDAOImpl implements TodoDAO{
         return getStringObjectLinkedHashMap(title, color, categoryEntity);
     }
 
-    private LinkedHashMap<String, Object> getStringObjectLinkedHashMap(String title, String color, CategoryEntity categoryEntity) {
+    private LinkedHashMap<String, Object> getStringObjectLinkedHashMap(String title,
+                                                                        String color,
+                                                                        CategoryEntity categoryEntity) {
         categoryEntity.setTitle(title);
         categoryEntity.setColor(color);
         categoryEntity = categoryRepository.save(categoryEntity);
